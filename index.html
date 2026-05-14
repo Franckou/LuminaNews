@@ -24,45 +24,64 @@
         });
     
         // Escuchamos el evento de tu celular
-channel.bind('aparecer-alerta', function(data) {
-    lanzarNotificacionNativa();
-});
-
-function lanzarNotificacionNativa() {
-    // 1. Verificamos si el navegador soporta notificaciones
-    if (!("Notification" in window)) {
-        alert("Este navegador no soporta notificaciones de sistema");
-        return;
+    channel.bind('aparecer-alerta', function(data) {
+        lanzarNotificacionNativa();
+    });
+    
+    function lanzarNotificacionNativa() {
+        // 1. Verificamos si el navegador soporta notificaciones
+        if (!("Notification" in window)) {
+            alert("Este navegador no soporta notificaciones de sistema");
+            return;
+        }
+    
+        // 2. Pedimos permiso (esto debe hacerse una sola vez antes del rodaje)
+        Notification.requestPermission().then(permission => {
+            if (permission === "granted") {
+                const options = {
+                    body: "ÚLTIMO MOMENTO: Marcos Raúl Valles Figueroa quedó en libertad por buena conducta.",
+                    icon: "src/lumina.ico", // El logo que aparecerá en la alerta
+                    silent: false // Deja que el sistema use su propio sonido
+                };
+    
+                const notification = new Notification("Lumina News!", options);
+    
+                // 3. Al hacer clic, lo lleva a tu web
+                notification.onclick = function() {
+                    window.focus();
+                    window.location.href = "https://limunanews.netlify.app"; 
+                };
+                
+                // Reproducir tu sonido personalizado también (opcional)
+                const audio = new Audio('notificacion-sound.mp3');
+                audio.play();
+            }
+        });
+        function prepararNotificaciones() {
+        if (!("Notification" in window)) {
+            alert("Este navegador no soporta notificaciones de sistema.");
+            return;
     }
 
-    // 2. Pedimos permiso (esto debe hacerse una sola vez antes del rodaje)
     Notification.requestPermission().then(permission => {
         if (permission === "granted") {
-            const options = {
-                body: "ÚLTIMO MOMENTO: Marcos Raúl Valles Figueroa quedó en libertad por buena conducta.",
-                icon: "src/lumina.ico", // El logo que aparecerá en la alerta
-                silent: false // Deja que el sistema use su propio sonido
-            };
-
-            const notification = new Notification("Lumina News!", options);
-
-            // 3. Al hacer clic, lo lleva a tu web
-            notification.onclick = function() {
-                window.focus();
-                window.location.href = "https://limunanews.netlify.app"; 
-            };
-            
-            // Reproducir tu sonido personalizado también (opcional)
-            const audio = new Audio('notificacion-sound.mp3');
-            audio.play();
+            alert("✅ Sistema listo. Ya podés activar la noticia desde el celu.");
+            // Ocultamos el botón para que no salga en la película
+            document.getElementById('setup-camera').style.display = 'none';
+        } else {
+            alert("❌ Permiso denegado. Tenés que habilitar las notificaciones en el candadito de la barra de direcciones.");
         }
     });
+}
 }
     </script>
     <title>Lumina News!</title>
 </head>
 
 <body>
+    <button id="setup-camera" onclick="prepararNotificaciones()" style="position: fixed; top: 10px; left: 10px; z-index: 9999; opacity: 0.5; cursor: pointer;">
+        ⚙️ Preparar Cámara
+    </button>
     <header>
         <h1 class="lumina-title">Lumina News!</h1>
         <div class="icons">
