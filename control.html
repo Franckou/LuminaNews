@@ -1,43 +1,21 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lumina Control</title>
+    <title>Control Lumina</title>
     <style>
-        body { margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center; background: white; font-family: sans-serif; }
-        #btn-trigger {
-            width: 85%;
-            height: 350px;
-            background-color: #e63946;
-            color: white;
-            border: none;
-            border-radius: 30px;
-            font-size: 1.8rem;
-            font-weight: bold;
-            box-shadow: 0 15px 35px rgba(230, 57, 70, 0.4);
-            cursor: pointer;
-            transition: transform 0.1s;
-        }
-        #btn-trigger:active { transform: scale(0.95); background-color: #b91c1c; }
+        body { margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; font-family: Arial; }
+        button { width: 90%; height: 200px; background: red; color: white; font-size: 25px; border-radius: 20px; border: none; font-weight: bold; }
+        button:active { background: darkred; transform: scale(0.98); }
     </style>
 </head>
 <body>
-    <button id="btn-trigger" onclick="enviarAlerta()">ACTIVAR NOTIFICACIÓN</button>
-
+    <button onclick="disparar()">¡LANZAR NOTICIA!</button>
     <script>
-        async function enviarAlerta() {
-            const btn = document.getElementById('btn-trigger');
-            try {
-                // Llamamos a la función de Netlify
-                const res = await fetch('/.netlify/functions/trigger-noti', { method: 'POST' });
-                if (res.ok) {
-                    btn.style.backgroundColor = "#2a9d8f"; // Verde de éxito temporal
-                    setTimeout(() => btn.style.backgroundColor = "#e63946", 1000);
-                }
-            } catch (err) {
-                alert("Error de conexión");
-            }
+        function disparar() {
+            fetch('/.netlify/functions/trigger-noti', { method: 'POST' })
+            .then(res => console.log("Señal enviada"))
+            .catch(err => alert("Error: " + err));
         }
     </script>
 </body>
