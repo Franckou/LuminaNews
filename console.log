@@ -1,0 +1,25 @@
+function lanzarNotificacionNativa() {
+    console.log("Señal recibida de Pusher..."); // Para ver si la señal llega
+
+    if (!("Notification" in window)) {
+        console.error("Este navegador no soporta notificaciones.");
+        return;
+    }
+
+    if (Notification.permission === "granted") {
+        console.log("Permiso concedido, lanzando...");
+        const notification = new Notification("Lumina News!", {
+            body: "ÚLTIMO MOMENTO: Marcos Raúl Valles Figueroa quedó en libertad.",
+            icon: "src/lumina.ico"
+        });
+
+        notification.onclick = () => {
+            window.focus();
+            window.location.href = "https://limunanews.netlify.app"; 
+        };
+    } else {
+        console.warn("No hay permiso de notificación. Estado actual:", Notification.permission);
+        // Si no hay permiso de sistema, mostramos al menos la de la web como respaldo
+        mostrarNotificacionWebBackup(); 
+    }
+}
