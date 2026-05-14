@@ -9,72 +9,60 @@
     <link rel="shortcut icon" href="src/lumina.ico" type="image/x-icon">
     <!-- Importar Pusher -->
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
-    
     <script>
-        // Inicialización con tus datos de la imagen
-        const pusher = new Pusher('2b186dcf533c78bb306b', {
-          cluster: 'sa1'
-        });
-    
-        const channel = pusher.subscribe('canal-rodaje');
-    
-        // Escuchamos el evento
-        channel.bind('aparecer-alerta', function(data) {
-            mostrarNotificacionReal();
-        });
-    
-        // Escuchamos el evento de tu celular
+    // 1. Configuración de Pusher
+    const pusher = new Pusher('2b186dcf533c78bb306b', {
+        cluster: 'sa1'
+    });
+
+    const channel = pusher.subscribe('canal-rodaje');
+
+    // 2. Escuchamos la señal del celular
     channel.bind('aparecer-alerta', function(data) {
         lanzarNotificacionNativa();
     });
-    
+
+    // 3. Función para la notificación de sistema
     function lanzarNotificacionNativa() {
-        // 1. Verificamos si el navegador soporta notificaciones
-        if (!("Notification" in window)) {
-            alert("Este navegador no soporta notificaciones de sistema");
-            return;
+        if (!("Notification" in window)) return;
+
+        if (Notification.permission === "granted") {
+            const options = {
+                body: "ÚLTIMO MOMENTO: Marcos Raúl Valles Figueroa quedó en libertad por buena conducta.",
+                icon: "src/lumina.ico",
+                silent: false 
+            };
+
+            const notification = new Notification("Lumina News!", options);
+
+            notification.onclick = function() {
+                window.focus();
+                window.location.href = "https://limunanews.netlify.app"; 
+            };
+            
+            // Intenta reproducir sonido, si no está el archivo, no frena la notificación
+            const audio = new Audio('notificacion-sound.mp3');
+            audio.play().catch(e => console.log("Sonido no encontrado o bloqueado"));
         }
-    
-        // 2. Pedimos permiso (esto debe hacerse una sola vez antes del rodaje)
-        Notification.requestPermission().then(permission => {
-            if (permission === "granted") {
-                const options = {
-                    body: "ÚLTIMO MOMENTO: Marcos Raúl Valles Figueroa quedó en libertad por buena conducta.",
-                    icon: "src/lumina.ico", // El logo que aparecerá en la alerta
-                    silent: false // Deja que el sistema use su propio sonido
-                };
-    
-                const notification = new Notification("Lumina News!", options);
-    
-                // 3. Al hacer clic, lo lleva a tu web
-                notification.onclick = function() {
-                    window.focus();
-                    window.location.href = "https://limunanews.netlify.app"; 
-                };
-                
-                // Reproducir tu sonido personalizado también (opcional)
-                const audio = new Audio('notificacion-sound.mp3');
-                audio.play();
-            }
-        });
-        function prepararNotificaciones() {
-        if (!("Notification" in window)) {
-            alert("Este navegador no soporta notificaciones de sistema.");
-            return;
     }
 
-    Notification.requestPermission().then(permission => {
-        if (permission === "granted") {
-            alert("✅ Sistema listo. Ya podés activar la noticia desde el celu.");
-            // Ocultamos el botón para que no salga en la película
-            document.getElementById('setup-camera').style.display = 'none';
-        } else {
-            alert("❌ Permiso denegado. Tenés que habilitar las notificaciones en el candadito de la barra de direcciones.");
+    // 4. Función del botón de cámara (AHORA FUERA DE OTRAS FUNCIONES)
+    function prepararNotificaciones() {
+        if (!("Notification" in window)) {
+            alert("Este navegador no soporta notificaciones.");
+            return;
         }
-    });
-}
-}
-    </script>
+
+        Notification.requestPermission().then(permission => {
+            if (permission === "granted") {
+                alert("✅ Sistema listo.");
+                document.getElementById('setup-camera').style.display = 'none';
+            } else {
+                alert("❌ Permiso denegado.");
+            }
+        });
+    }
+</script>
     <title>Lumina News!</title>
 </head>
 
