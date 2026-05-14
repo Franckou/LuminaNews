@@ -7,6 +7,34 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="shortcut icon" href="src/lumina.ico" type="image/x-icon">
+    <!-- Importar Pusher -->
+    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+    
+    <script>
+        // Inicialización con tus datos de la imagen
+        const pusher = new Pusher('2b186dcf533c78bb306b', {
+          cluster: 'sa1'
+        });
+    
+        const channel = pusher.subscribe('canal-rodaje');
+    
+        // Escuchamos el evento
+        channel.bind('aparecer-alerta', function(data) {
+            mostrarNotificacionReal();
+        });
+    
+        function mostrarNotificacionReal() {
+            const noti = document.getElementById('notification-toast');
+            const audio = new Audio('notificacion-sound.mp3'); 
+            
+            // Ejecutar sonido y mostrar banner
+            audio.play().catch(() => console.log("Clickea la pantalla una vez para habilitar audio"));
+            noti.classList.remove('hidden');
+            
+            // Opcional: que desaparezca sola tras 10 segundos
+            setTimeout(() => noti.classList.add('hidden'), 10000);
+        }
+    </script>
     <title>Lumina News!</title>
 </head>
 
