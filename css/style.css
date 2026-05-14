@@ -124,7 +124,7 @@ footer {
 }
 
 /* Efecto cuando el usuario pasa el mouse por encima del anuncio */
-.ads:hover .cartel-ad {
+.ads, .cartel-ad:hover .cartel-ad {
     transform: translateY(-3px);
     /* Se eleva sutilmente */
     filter: brightness(1.1);
@@ -132,14 +132,14 @@ footer {
 }
 
 /*oculta el scrollbar dentro del anuncio*/
-.ads {
+.ads , .cartel-ad{
     scrollbar-width: none;
     /*oculata en firefox*/
     -ms-overflow-style: none;
     /**oculta en explorer*/
 }
 
-.ads::-webkit-scrollbar {
+.ads, .cartel-ad::-webkit-scrollbar {
     display: none;
     /*oculata en chrome, safari y edge*/
 }
