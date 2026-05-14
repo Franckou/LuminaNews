@@ -1,0 +1,121 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+p {
+    line-height: 1.5;
+    font-size: 25px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 0 50px 0 10px;
+    font-style: oblique;
+}
+
+.ult-momento {
+    background-color: rgb(174, 0, 0);
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    height: 100px;
+}
+
+.carrusel-track {
+    display: flex;
+    width: max-content;
+    animation: carruselHorizontal 20s linear inifite;
+}
+
+.carrusel-track span {
+    padding-right: 50px;
+    display: inline-block;
+    font-size: 40px;
+    padding-left: 100%;
+    /* Empieza completamente fuera de la pantalla a la izquierda */
+    animation: carruselHorizontal 5s linear infinite;
+    /* Controla velocidad y repetición */
+}
+
+/* Definición del movimiento de izquierda a derecha */
+@keyframes carruselHorizontal {
+    0% {
+        transform: translate3d(-100%, 0, 0);
+    }
+
+    100% {
+        transform: translate3d(100%, 0, 0);
+    }
+}
+
+.lumina-title {
+    color: rgb(255, 255, 255);
+    text-align: center;
+}
+
+.ult-momento-title {
+    text-align: center;
+}
+
+.hamburguer {
+    color: #fff;
+    width: 25px;
+    top: 40px;
+    right: 50px;
+    position: absolute;
+    cursor: pointer;
+    z-index: 10;
+    padding: 20px 30px;
+    margin-top: -20px;
+    margin-right: -50px;
+    background: linear-gradient(to left, rgb(174, 0, 0) 60%, rgba(162, 8, 8, 0) 100%);
+}
+
+.foto-marcos {
+    position: absolute;
+    right: 0;
+    width: 70%;
+    height: 550px;
+    z-index: 1;
+}
+
+.blur {
+    position: absolute;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to left, #33333300 0%, #fff 70%);
+    z-index: 2;
+}
+
+.content {
+    position: absolute;
+    z-index: 3;
+}
+
+.content h1 {
+    padding: 10px 0 0 10px;
+    max-width: 50%;
+    font-size: 90px;
+}
+
+.content h3 {
+    color: rgb(162, 0, 0);
+    padding: 25px 0 25px 10px;
+    max-width: 50%;
+    font-size: 35px;
+}
+
+.text {
+    width: 50%;
+    padding: 0 10px 0 10px;
+    font-size: 25px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.peligroso {
+    text-align: center;
+    color: #fff;
+    margin: 25px 0 10px 10px;
+    padding: 5px;
+    background: rgb(162, 0, 0);
+    width: 300px;
+}
